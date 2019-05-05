@@ -40,16 +40,22 @@ const thisReduxApi = reduxApi({
     // base endpoint options `fetch(url, options)`
     options: config.jsonOptions,
 
-    // reducer (state, action) {
-    //  console.log('reducer', action);
-    //  return state;
+    // reducer(state, action) {
+    //   console.log("reducer", action);
+    //   return state;
     // },
 
     // postfetch: [
-    //  function ({data, actions, dispatch, getState, request}) {
-    //    console.log('postfetch', {data, actions, dispatch, getState, request});
-    //    dispatch(actions.kittens.sync());
-    //  }
+    //   function({ data, actions, dispatch, getState, request }) {
+    //     console.log("postfetch", {
+    //       data,
+    //       actions,
+    //       dispatch,
+    //       getState,
+    //       request
+    //     });
+    //     dispatch(actions.events.sync());
+    //   }
     // ],
 
     // Reimplement default `transformers.object`

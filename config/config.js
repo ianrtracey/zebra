@@ -19,7 +19,7 @@ const completeConfig = {
   },
 
   production: {
-    appUrl: `https://nextjs-sql-rest-api.herokuapp.com/`
+    appUrl: `https://sleepy-chamber-96473.herokuapp.com/`
   }
 };
 

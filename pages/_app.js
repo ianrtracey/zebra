@@ -6,6 +6,14 @@ import withRedux from "next-redux-wrapper";
 import { makeStore } from "../redux/reduxApi.js";
 import { Provider as StyletronProvider } from "styletron-react";
 import { styletron } from "../styletron";
+import { styled } from "baseui";
+
+const Centered = styled("div", {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%"
+});
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
