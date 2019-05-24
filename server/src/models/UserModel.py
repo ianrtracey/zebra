@@ -1,7 +1,7 @@
 
 from marshmallow import fields, Schema
 import datetime
-from . import db
+from . import db, bcrypt
 from .EventModel import EventSchema
 
 class UserModel(db.Model):
@@ -40,13 +40,7 @@ class UserModel(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-
-    def __generate_hash(self, password):
-        return bcrypt.generate_password_hash(password, rounds=10).decode("utf-8")
-  
-    def check_hash(self, password):
-        return bcrypt.check_password_hash(self.password, password)
-
+    
     @staticmethod
     def get_all_users():
         return UserModel.query.all()
@@ -54,6 +48,18 @@ class UserModel(db.Model):
     @staticmethod
     def get_one_user(id):
         return UserModel.query.get(id)
+    
+    @staticmethod
+    def get_user_by_email(email):
+        return UserModel.query.filter_by(email=email).first()
+
+    def __generate_hash(self, password):
+        return bcrypt.generate_password_hash(password, rounds=10).decode("utf-8")
+  
+    def check_hash(self, password):
+        return bcrypt.check_password_hash(self.password, password)
+
+
 
     def __repr(self):
         return '<id {}>'.format(self.id)
