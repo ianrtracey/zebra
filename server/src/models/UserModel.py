@@ -51,7 +51,9 @@ class UserModel(db.Model):
     
     @staticmethod
     def get_user_by_email(email):
-        return UserModel.query.filter_by(email=email).first()
+        res = UserModel.query.filter_by(email=email)
+        print(f"res: {res}")
+        return res.first()
 
     def __generate_hash(self, password):
         return bcrypt.generate_password_hash(password, rounds=10).decode("utf-8")

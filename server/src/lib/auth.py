@@ -23,9 +23,7 @@ class Auth():
                 'HS256'
             ).decode("utf-8")
         except Exception as e:
-            return build_response({
-                'error': 'error generating jwt token'
-            }, 400)
+            raise
 
     @staticmethod
     def decode_token(token):
@@ -67,3 +65,5 @@ class Auth():
             g.user = { 'id': user_id}
             return func(*args, **kwargs)
         return decorated_auth
+
+

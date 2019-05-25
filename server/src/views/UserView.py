@@ -7,8 +7,10 @@ from ..lib.response import build_response
 user_api = Blueprint('users', __name__)
 user_schema = UserSchema()
 
+
 @user_api.route('/', methods=['POST'])
 def create():
+    print("Creating...")
     req_data = request.get_json()
     data, error = user_schema.load(req_data)
 
@@ -16,6 +18,7 @@ def create():
         return build_response(error, 400)
     
     user = UserModel.get_user_by_email(data.get('email'))
+    print(f"user -- {user}")
     if user:
         message = {
             'error': 'User already exists with that email.'
@@ -26,12 +29,19 @@ def create():
     user.save()
 
     user_data = user_schema.dump(user).data
+    print(f"newly created user -- {user_data}")
 
-    token = Auth.generate_token(user_data.get('id'))
+    try:
+        token = Auth.generate_token(user_data.get('id'))
+        print(f"token -- {token}")
+        return build_response({
+            'jwt_token': token
+        }, 201)
+    except Exception as e:
+        return build_response({
+            'error': 'error generating jwt token:' + str(e)
+        }, 400)
 
-    return build_response({
-        'jwt_token': token
-    }, 201)
 
 @user_api.route('/login', methods=['POST'])
 def login():
@@ -63,3 +73,5 @@ def me():
     user = UserModel.get_one_user(g.user.get('id'))
     user_data = user_schema.dump(user).data
     return build_response(user_data, 200)
+
+

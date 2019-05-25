@@ -56,3 +56,5 @@ class EventSchema(Schema):
   date = fields.Str(required=True)
   owner_id = fields.Int(required=True)
   created_at = fields.DateTime(dump_only=True)
+
+
