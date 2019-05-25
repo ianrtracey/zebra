@@ -6,6 +6,7 @@ class StyleTronDocument extends Document {
   static getInitialProps(props) {
     const page = props.renderPage(App => props => (
       <StyletronProvider value={styletron}>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <App {...props} />
       </StyletronProvider>
     ));
