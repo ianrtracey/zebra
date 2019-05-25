@@ -4,7 +4,11 @@
 `pip install pip env` or `brew install pipenv`
 
 ## Install Poetry
-Check it out (here)[https://github.com/sdispater/poetry]
+Install it from (here)[https://github.com/sdispater/poetry].
+Then:
+```
+poetry install
+```
 
 ## Running
 Make sure to set the following env variables
