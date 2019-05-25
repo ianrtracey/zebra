@@ -11,12 +11,14 @@ class EventModel(db.Model):
     location = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime)
     modified_at = db.Column(db.DateTime)
+    date = db.Column(db.DateTime)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False) # add this new line
 
     def __init__(self, data):
         self.title = data.get('title')
         self.description = data.get('description')
         self.location = data.get('location')
+        self.date = data.get('date')
         self.created_at = datetime.datetime.utcnow()
         self.modified_at = datetime.datetime.utcnow()
         self.owner_id = data.get('owner_id')
@@ -51,5 +53,6 @@ class EventSchema(Schema):
   title = fields.Str(required=True)
   description = fields.Str(required=True)
   location = fields.Str(required=True)
+  date = fields.Str(required=True)
   owner_id = fields.Int(required=True)
   created_at = fields.DateTime(dump_only=True)
