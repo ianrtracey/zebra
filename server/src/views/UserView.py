@@ -44,9 +44,9 @@ def login():
         return build_response({'error': 'you need to include an email and password'}, 400)
     
     user = UserModel.get_user_by_email(data.get('email'))
-    print data.get('email')
-    print data.get('password')
-    print user
+    print(data.get('email'))
+    print(data.get('password'))
+    print(user)
     if not user or not user.check_hash(data.get('password')):
         return build_response({'error': 'invalid credentials'}, 400)
 
