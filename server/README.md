@@ -1,7 +1,13 @@
 # Setup Instructions
 
+
 ## Install pipenv
-`pip install pip env` or `brew install pipenv`
+Install it from (here)[https://github.com/pypa/pipenv].
+Then:
+```
+pipenv install 3.7.1
+```
+
 
 ## Install Poetry
 Install it from (here)[https://github.com/sdispater/poetry].
@@ -9,6 +15,7 @@ Then:
 ```
 poetry install
 ```
+
 
 ## Running
 Make sure to set the following env variables
@@ -18,9 +25,11 @@ $ export DATABASE_URL=postgres://name:password@host:port/blog_api_db
 $ export JWT_SECRET_KEY=hhgaghhgsdhdhdd
 ```
 
+
 ## Database
 # Installation
 Make sure to install and run postgres >= 11.xx
+
 
 # Migration
 to create the tables
