@@ -16,6 +16,9 @@ Then:
 poetry install
 ```
 
+## Install system dependencies
+sudo apt install postgresql postgresql-contrib libpq-dev
+
 
 ## Running
 Make sure to set the following env variables
@@ -26,7 +29,7 @@ export JWT_SECRET_KEY=hhgaghhgsdhdhdd
 poetry shell
 python run.py
 
-# hit endpoints with
+# hit endpoints with:
 wget -qO - http://localhost:5000/ 
 ```
 

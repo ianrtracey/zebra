@@ -13,6 +13,7 @@ flask_sqlalchemy = "^2.4"
 marshmallow = "^2.19"
 flask_script = "^2.0"
 flask_migrate = "^2.5"
+pyjwt = "^1.7"
 
 [tool.poetry.dev-dependencies]
 
