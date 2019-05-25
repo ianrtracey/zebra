@@ -1,162 +1,118 @@
 import React, { Component } from "react";
 import PageLayout from "../components/common/PageLayout.js";
-import { Input } from "baseui/input";
-import { FormControl } from "baseui/form-control";
-import { Search } from "baseui/icon";
+import { styled } from "baseui";
+import { Heading, HeadingLevel } from "baseui/heading";
+import { Button, SHAPE, KIND } from "baseui/button";
+import { StatefulButtonGroup } from "baseui/button-group";
+import Img from "react-image";
+import { Input, StatefulInput } from "baseui/input";
+import { StatefulTextarea as Textarea, SIZE } from "baseui/textarea";
+import { StatefulDatepicker } from "baseui/datepicker";
 import { Block } from "baseui/block";
-import { StatefulTextarea as Textarea } from "baseui/textarea";
-import { Button } from "baseui/button";
-import ArrowRight from "baseui/icon/arrow-right";
-import { Label2 } from "baseui/typography";
-import reduxApi, { withEvents } from "../redux/reduxApi.js";
-import Router from "next/router";
+import { addDays } from "date-fns";
+import statefulDatepicker from "baseui/datepicker/stateful-datepicker";
+import Delete from "baseui/icon/delete";
+import Check from "baseui/icon/check";
 
-const Steps = {
-  INFO: "info",
-  INVITE: "invite"
-};
-class NewEventPage extends Component {
+const testSrcUrl =
+  "https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/58420083_2129822833739127_8168988201688498176_o.jpg?_nc_cat=101&_nc_ht=scontent-sjc3-1.xx&oh=4fa79a95c7d4cd27d24129c5c15dc613&oe=5D99107B";
+
+const CenteredContainer = styled("div", {
+  display: "flex",
+  justifyContent: "center"
+});
+
+const Center = styled("div", {
+  display: "flex",
+  justifyContent: "center",
+  padding: "0.75em"
+});
+
+const ContentContainer = styled("div", {});
+
+const ImageWrapper = styled("div", {
+  maxWidth: "200px"
+});
+
+const FormFieldWrapper = styled("div", {
+  paddingTop: "1em",
+  paddingBottom: "1em"
+});
+
+const ButtonWrapper = styled("div", {
+  padding: "1em",
+  display: "flex",
+  justifyContent: "space-between",
+  height: "100vh",
+  alignItems: "end"
+});
+
+class EventPage extends Component {
   static async getInitialProps({ store, isServer, pathname, query }) {
-    return {};
+    // pass
+    return {
+      id: query.id
+    };
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      steps: [Steps.INFO, Steps.INVITE],
-      isDisabled: false,
-      form: {
-        name: "",
-        description: "",
-        date: ""
-      }
-    };
   }
 
-  handleContinueButtonClick = () => {
-    this._incrementStep();
-  };
-
-  handleDoneButtonClick = () => {
-    this.setState({ isDisabled: true });
-    const callWhenDone = () => {
-      this.setState({ isDisabled: false });
-      Router.push("/");
-    };
-    const { name, description, date } = this.state.form;
-    const newEvent = {
-      name,
-      description
-    };
-    console.log("sending with", newEvent);
-    this.props.dispatch(
-      reduxApi.actions.events.post(
-        {},
-        {
-          body: JSON.stringify(newEvent)
-        },
-        callWhenDone
-      )
-    );
-  };
-
-  _getCurrentStep = () => {
-    const { steps } = this.state;
-    if (!steps || steps.length == 0) {
-      return -1;
-    }
-    return steps[0];
-  };
-
-  _incrementStep = () => {
-    const steps = this.state.steps;
-    this.setState({
-      ...this.state,
-      steps: steps.slice(1)
-    });
-  };
-
-  handleOnChange = e => {
-    const { name, value } = e.target;
-    const { form } = this.state;
-    this.setState({
-      ...this.state,
-      form: {
-        ...form,
-        [name]: value
-      }
-    });
-  };
-
-  renderInfoStep = () => {
+  render() {
+    const { id } = this.props;
     return (
       <React.Fragment>
-        <FormControl label="Name ">
-          <Input
-            name="name"
-            onChange={this.handleOnChange}
-            value={this.state.name}
-            placeholder="My Amazing Event"
-          />
-        </FormControl>
-        <FormControl label="Location">
-          <Input
-            name="location"
-            onChange={this.handleOnChange}
-            value={this.state.location}
-            placeholder="1234 Internet Lane, IN 09876"
-            overrides={{
-              Before: () => (
-                <Block
-                  display="flex"
-                  alignItems="center"
-                  paddingLeft="scale500"
-                >
-                  <Search size="16px" />
-                </Block>
-              )
-            }}
-          />
-        </FormControl>
-        <FormControl label="Description">
-          <Textarea
-            name="description"
-            onChange={this.handleOnChange}
-            value={this.state.description}
-          />
-        </FormControl>
-      </React.Fragment>
-    );
-  };
-
-  renderInviteStep = () => (
-    <Block align="center">
-      <p>Invite friends (TBD)</p>
-    </Block>
-  );
-
-  render() {
-    const step = this._getCurrentStep();
-    console.log(this.state);
-    return (
-      <PageLayout title="New Event">
-        {step === Steps.INFO && this.renderInfoStep()}
-        {step === Steps.INVITE && this.renderInviteStep()}
-        <Block display="flex" justifyContent="flex-end">
-          {this.state.steps.length > 1 ? (
+        <CenteredContainer>
+          <ContentContainer>
+            <Center>
+              <div>
+                <Img
+                  style={{
+                    display: "inline-block",
+                    margin: "-12px",
+                    width: "112%"
+                  }}
+                  src={testSrcUrl}
+                />
+                <HeadingLevel>
+                  <React.Fragment>
+                    <Input
+                      autoFocus
+                      placeholder="Your amazing event name here"
+                    />
+                    <Heading font="font500">Hosted by Ian Tracey</Heading>
+                    <FormFieldWrapper>
+                      <StatefulDatepicker />
+                    </FormFieldWrapper>
+                    <FormFieldWrapper>
+                      <StatefulInput placeholder="1234 easy st." />
+                    </FormFieldWrapper>
+                    <FormFieldWrapper>
+                      <Textarea size={SIZE.compact} placeholder="Description" />
+                    </FormFieldWrapper>
+                  </React.Fragment>
+                </HeadingLevel>
+              </div>
+            </Center>
+          </ContentContainer>
+        </CenteredContainer>
+        <React.Fragment>
+          <ButtonWrapper>
             <Button
-              endEnhancer={() => <ArrowRight size={24} />}
-              onClick={this.handleContinueButtonClick}
+              style={{ width: "4em", height: "4em" }}
+              kind={KIND.secondary}
+              shape={SHAPE.round}
             >
-              Continue
+              <Delete size="height 2em; width: 2em" />
             </Button>
-          ) : (
-            <Button onClick={this.handleDoneButtonClick}>Done</Button>
-          )}
-        </Block>
-      </PageLayout>
+            <Button style={{ width: "4em", height: "4em" }} shape={SHAPE.round}>
+              <Check size="height 2em; width: 2em" />
+            </Button>
+          </ButtonWrapper>
+        </React.Fragment>
+      </React.Fragment>
     );
   }
 }
-
-export default withEvents(NewEventPage);
+export default EventPage;
