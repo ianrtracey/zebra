@@ -8,16 +8,20 @@ import { Block } from "baseui/block";
 import Router from "next/router";
 
 const CenteredContainer = styled("div", {
-  width: "100%",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  height: "100%"
+  height: "100%",
+  width: "100%"
 });
 
 const Center = styled("div", {
   display: "flex",
   justifyContent: "center"
+});
+
+const ContentContainer = styled("div", {
+  width: "75%"
 });
 
 class IndexPage extends Component {
@@ -44,7 +48,7 @@ class IndexPage extends Component {
 
     return (
       <CenteredContainer>
-        <main id="index">
+        <ContentContainer>
           <H2 align="center">Your Events</H2>
           <Center>
             <div>
@@ -64,7 +68,7 @@ class IndexPage extends Component {
               <H4 align="center">Upcoming</H4>
             </div>
           </Center>
-        </main>
+        </ContentContainer>
       </CenteredContainer>
     );
   }
