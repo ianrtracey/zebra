@@ -10,9 +10,20 @@ user_schema = UserSchema()
 
 @user_api.route('/', methods=['POST'])
 def create():
+    # ensure content type
+    content_type = request.headers.get("Content-Type")
+    if "application/json" not in content_type.lower():
+        print(f"bad content type: {content_type}")
+        return build_response({
+            "error": f"Content type was not application/json. It was {content_type}."
+        }, 400)
     print("Creating...")
     req_data = request.get_json()
+    print(f"req data was: {req_data}")
     data, error = user_schema.load(req_data)
+    if not data.get('password'):
+        err = {f"error": "Password must have length > 0; it was {data.get('password')}"}
+        return build_response(err, 400)
 
     if error:
         return build_response(error, 400)
@@ -33,7 +44,6 @@ def create():
 
     try:
         token = Auth.generate_token(user_data.get('id'))
-        print(f"token -- {token}")
         return build_response({
             'jwt_token': token
         }, 201)
