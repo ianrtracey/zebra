@@ -10,7 +10,8 @@ routesImplementation.add("/:slug", "index");
 routesImplementation.add("/more/:slug", "index");
 routesImplementation.add("/event/new", "newEvent");
 routesImplementation.add("/event/:id", "event");
-
+routesImplementation.add("/account/signup", "signup");
+routesImplementation.add("/account/login", "login");
 module.exports = routesImplementation;
 
 // Usage inside Page.getInitialProps (req = { pathname, asPath, query } = { pathname: '/', asPath: '/about', query: { slug: 'about' } })
