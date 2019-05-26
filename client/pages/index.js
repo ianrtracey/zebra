@@ -8,6 +8,9 @@ import Router from "next/router";
 import Plus from "baseui/icon/plus";
 import { Button, SHAPE, KIND } from "baseui/button";
 import withAuth from "../components/withAuth";
+import api from "../api";
+import Link from "next/link";
+
 const CenteredContainer = styled("div", {
   display: "flex",
   justifyContent: "center",
@@ -55,6 +58,9 @@ const Header = () => (
 );
 
 class IndexPage extends Component {
+  state = {
+    events: []
+  };
   static async getInitialProps({ store, isServer, pathname, query }) {
     // Get all events
     const events = await store.dispatch(reduxApi.actions.events.sync());
@@ -67,15 +73,24 @@ class IndexPage extends Component {
   constructor(props) {
     super(props);
   }
+
   handleNewEventButtonClick = () => {
     Router.push("/event/new");
   };
+  componentDidMount = () => {
+    const token = localStorage.getItem("ZEBRA_ACCESS_TOKEN");
+    api.getEvents(token).then(resp => {
+      this.setState({
+        events: resp
+      });
+    });
+  };
 
   render() {
-    const {
-      events: { data }
-    } = this.props;
-
+    const { events } = this.state;
+    console.log({
+      events
+    });
     return (
       <div>
         <Header />
@@ -83,19 +98,23 @@ class IndexPage extends Component {
           <ContentContainer>
             <H4 align="left">Your Events</H4>
             <div>
-              {data.length === 0 ? (
-                <div>no events</div>
+              {events.length === 0 ? (
+                <div>no events :/</div>
               ) : (
-                data.map(e => (
-                  <div>
-                    <H6>{e.name}</H6>
+                events.map(e => (
+                  <div style={{ paddingTop: "4em" }}>
+                    <Link href={`/event/${e.external_link}`}>{e.title}</Link>
                   </div>
                 ))
               )}
             </div>
           </ContentContainer>
         </CenteredContainer>
-        <Button style={createButtonStyles} shape={SHAPE.round}>
+        <Button
+          style={createButtonStyles}
+          shape={SHAPE.round}
+          onClick={this.handleNewEventButtonClick}
+        >
           <Plus size="height 2em; width: 2em" />
         </Button>
       </div>
@@ -103,4 +122,4 @@ class IndexPage extends Component {
   }
 }
 
-export default withAuth(withEvents(IndexPage));
+export default withAuth(IndexPage);
