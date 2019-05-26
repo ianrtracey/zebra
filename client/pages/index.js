@@ -7,7 +7,7 @@ import { Block } from "baseui/block";
 import Router from "next/router";
 import Plus from "baseui/icon/plus";
 import { Button, SHAPE, KIND } from "baseui/button";
-
+import withAuth from "../components/withAuth";
 const CenteredContainer = styled("div", {
   display: "flex",
   justifyContent: "center",
@@ -103,4 +103,4 @@ class IndexPage extends Component {
   }
 }
 
-export default withEvents(IndexPage);
+export default withAuth(withEvents(IndexPage));
